@@ -67,7 +67,6 @@ const images = [
   "4323d87c-241f-49fa-9e95-c9b618f09cf2e.jpg",
   "4323d87c-241f-49fa-9e95-c9b618f09cf2e.jpg",
   "5995c2a3-40e3-4f50-a351-6f3832360659.jpg",
-  "06385fe3-125e-4548-849b-f85b43c3df6d.jpg",
   "6969e594-e6a6-4a07-ada5-9f79515437c2e.jpg",
   "7066ef2a-3e39-4f8e-a346-c1b4a70cca67.jpg",
   "9298f26c-397c-4629-a6dc-0cf9ad1f8249.jpg",
