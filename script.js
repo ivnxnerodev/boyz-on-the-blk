@@ -213,7 +213,7 @@ images.forEach((filename, index) => {
     const img = document.createElement('img');
     img.src = `img/${filename}`;
     img.alt = generateCaption(filename);
-    img.loading = 'lazy';
+    // img.loading = 'lazy';  // removed to prevent lazy-load warning
     img.addEventListener('click', () => openLightbox(index));
     
     item.appendChild(img);
