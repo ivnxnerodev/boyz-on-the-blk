@@ -1,8 +1,4 @@
 const gallery = document.getElementById("gallery");
-const lightbox = document.getElementById("lightbox");
-const lightboxImg = document.getElementById("lightboxImg");
-const lightboxDownload = document.getElementById("lightboxDownload");
-const lightboxClose = document.getElementById("lightboxClose");
 
 const images = [
 "0c6a1d80-48e7-4e46-8446-7d59cb0e0c6d.jpg",
@@ -132,57 +128,9 @@ const images = [
 "ff00cb5c-6933-44a3-903a-fbbcc29812fb.jpg"
 ];
 
-
-const buildGallery = () => {
-  const fragment = document.createDocumentFragment();
-
-  images.forEach((img) => {
-    const card = document.createElement("div");
-    card.className = "gallery__item";
-
-    const image = document.createElement("img");
-    image.src = `img/${img}`;
-    image.alt = "BOYZ ON THE BLK photo";
-    image.loading = "lazy";
-
-    const overlay = document.createElement("div");
-    overlay.className = "gallery__overlay";
-
-    card.addEventListener("click", () => openLightbox(img));
-
-    card.appendChild(image);
-    card.appendChild(overlay);
-    fragment.appendChild(card);
-  });
-
-  gallery.appendChild(fragment);
-};
-
-const openLightbox = (imgName) => {
-  const imgPath = `img/${imgName}`;
-  lightboxImg.src = imgPath;
-  lightboxDownload.href = imgPath;
-  lightboxDownload.target = "_blank";
-
-  lightbox.classList.add("is-open");
-  lightbox.setAttribute("aria-hidden", "false");
-};
-
-const closeLightbox = () => {
-  lightbox.classList.remove("is-open");
-  lightbox.setAttribute("aria-hidden", "true");
-};
-
-lightbox.addEventListener("click", (e) => {
-  if (e.target === lightbox) closeLightbox();
+// Create gallery
+images.forEach(filename => {
+  const img = document.createElement("img");
+  img.src = `img/${filename}`;  // image folder path
+  gallery.appendChild(img);
 });
-
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && lightbox.classList.contains("is-open")) {
-    closeLightbox();
-  }
-});
-
-lightboxClose.addEventListener("click", closeLightbox);
-
-buildGallery();
