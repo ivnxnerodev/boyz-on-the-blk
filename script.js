@@ -142,7 +142,6 @@ let initialDistance = 0;
 const gallery = document.getElementById('gallery');
 const lightbox = document.getElementById('lightbox');
 const lightboxImage = document.getElementById('lightbox-image');
-const lightboxCaption = document.getElementById('lightbox-caption');
 const lightboxClose = document.getElementById('lightbox-close');
 const lightboxPrev = document.getElementById('lightbox-prev');
 const lightboxNext = document.getElementById('lightbox-next');
@@ -152,15 +151,10 @@ const lightboxContent = document.getElementById('lightbox-content');
 const lightboxImageWrapper = document.getElementById('lightbox-image-wrapper');
 
 // ===== HELPER FUNCTIONS =====
-function generateCaption(filename) {
-    return filename.replace('.jpg', '').replace(/[-_]/g, ' ').toUpperCase();
-}
-
 function updateImage() {
     const filename = images[currentIndex];
     const path = `img/${filename}`;
     lightboxImage.src = path;
-    lightboxCaption.textContent = generateCaption(filename);
     
     // Update active thumbnail
     document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
@@ -212,7 +206,7 @@ images.forEach((filename, index) => {
     
     const img = document.createElement('img');
     img.src = `img/${filename}`;
-    img.alt = generateCaption(filename);
+    img.alt = "";
     img.loading = 'lazy';
     img.addEventListener('click', () => openLightbox(index));
     
@@ -225,7 +219,7 @@ images.forEach((filename, index) => {
     const thumb = document.createElement('img');
     thumb.src = `img/${filename}`;
     thumb.className = 'thumbnail';
-    thumb.alt = generateCaption(filename);
+    thumb.alt = "";
     thumb.addEventListener('click', () => {
         currentIndex = index;
         updateImage();
@@ -259,7 +253,13 @@ document.addEventListener('keydown', (e) => {
     switch(e.key) {
         case 'Escape':
             closeLightbox();
-
+            break;
+        case 'ArrowLeft':
+            prevImage();
+            break;
+        case 'ArrowRight':
+            nextImage();
+            break;
     }
 });
 
