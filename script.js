@@ -44,7 +44,7 @@ const images = [
   "39d9a635-5541-4bd9-ab8c-3cacc2d4582c.jpg",
   "41aac799-790b-40a3-a490-aed8cc4959ba.jpg",
   "44f16f65-8de0-4957-85a0-6f5a0eab64fc.jpg",
-  "45a336a0-b5de-4eac-b5d2-03e40ab97318e.jpg",
+  "45a336a0-b5de-4eac-b5d2-03e40ab97318.jpg",
   "50d9bdf0-c334-4c35-bae7-066892f81bd2.jpg",
   "57c4479b-d214-4e3c-9766-b23c28592c74.jpg",
   "72bf0ddd-8373-42fb-8618-44611c80cf3e.jpg",
@@ -58,7 +58,7 @@ const images = [
   "158c40e7-05e2-434f-a2bc-72870cdf64c2.jpg",
   "211d8c6d-75df-418b-b9a0-54684210364a.jpg",
   "222a8dab-be7a-44d1-badc-ebe38cb4e6b5.jpg",
-  "333c47a9-6459-4bff-8cf6-05b8d82295b8.jpg",
+  "333c47a9-645a-4bff-8cf6-05b8d82295b8.jpg",
   "492b08be-3f25-4c38-b9cb-8313a0f75c2e.jpg",
   "581ef210-8024-43e4-b55d-7e4653751839.jpg",
   "698e99a0-ebe7-46f5-9b3a-fa18d1262c8e.jpg",
@@ -131,7 +131,6 @@ const images = [
   "ff00cb5c-6933-44a3-903a-fbbcc29812fb.jpg"
 ];
 
-
 const buildGallery = () => {
   const fragment = document.createDocumentFragment();
 
@@ -144,10 +143,14 @@ const buildGallery = () => {
     image.alt = "BOYZ ON THE BLK collection photo";
     image.loading = "lazy";
 
+    // hide if image not found
+    image.onerror = () => {
+      card.style.display = "none";
+    };
+
     const overlay = document.createElement("div");
     overlay.className = "gallery__overlay";
 
-    // Click opens lightbox
     card.addEventListener("click", () => openLightbox(img));
 
     card.appendChild(image);
@@ -163,8 +166,6 @@ const openLightbox = (imgName) => {
   lightboxDownload.href = `img/${imgName}`;
   lightbox.classList.add("is-open");
   lightbox.setAttribute("aria-hidden", "false");
-
-  // Accessibility focus
   lightboxClose.focus();
 };
 
@@ -173,19 +174,16 @@ const closeLightbox = () => {
   lightbox.setAttribute("aria-hidden", "true");
 };
 
-// Close on outside click
 lightbox.addEventListener("click", (e) => {
   if (e.target === lightbox) closeLightbox();
 });
 
-// Close on ESC
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && lightbox.classList.contains("is-open")) {
     closeLightbox();
   }
 });
 
-// Close button
 lightboxClose.addEventListener("click", closeLightbox);
 
 buildGallery();
