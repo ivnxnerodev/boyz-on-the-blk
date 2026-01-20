@@ -1,4 +1,4 @@
-// ====== IMAGE LIST (YOUR FULL LIST) ======
+// ===== IMAGE DATA =====
 const images = [
     "0c6a1d80-48e7-4e46-8446-7d59cb0e0c6d.jpg",
     "0c328372-c83e-439a-b974-b4d9ea2868dc.jpg",
@@ -72,7 +72,7 @@ const images = [
     "5918508b-2dfe-4bdb-86ab-48bbd8d0b238.jpg",
     "6310044e-bbc3-4f99-be51-44693e5d5a6f.jpg",
     "7293781d-8922-4221-afb2-3088aacd2827.jpg",
-    "9642930f-1340-455f-99fd-fb1b4833cfd.jpg",
+    "9642930f-1340-455f-99fd-fb1b483fc3fd.jpg",
     "21415491-9c71-47c2-a0dd-defd54746188.jpg",
     "34971253-e404-4102-9c8f-9f462bcf9fe1.jpg",
     "68974395-664b-4a18-be16-357352ffb38e.jpg",
@@ -103,6 +103,7 @@ const images = [
     "d056aaf1-b1c7-4045-b070-ce3281e69db6.jpg",
     "d90fc444-47d5-48cb-8c29-7a5c5d47b82c.jpg",
     "d131f35b-0f78-487d-a82b-4e1452d7a31a.jpg",
+    "d493d43c-3e1b-43ed-9eac-9301273fbcf9 (1).jpg",
     "d493d43c-3e1b-43ed-9eac-9301273fbcf9.jpg",
     "d9159ec1-bdd9-4860-8eb2-f049d2c358f0.jpg",
     "d13087a4-b668-443e-af9b-6f4ee3199065.jpg",
@@ -126,156 +127,241 @@ const images = [
     "ff00cb5c-6933-44a3-903a-fbbcc29812fb.jpg"
 ];
 
-// ====== DOM ELEMENTS ======
-const gallery = document.getElementById("gallery");
-const lightbox = document.getElementById("lightbox");
-const lightboxImage = document.getElementById("lightbox-image");
-const lightboxCaption = document.getElementById("lightbox-caption");
-const lightboxClose = document.getElementById("lightbox-close");
-const lightboxDownload = document.getElementById("lightbox-download");
-const thumbnailsContainer = document.getElementById("thumbnails-container");
-const lightboxPrev = document.getElementById("lightbox-prev");
-const lightboxNext = document.getElementById("lightbox-next");
 
+// ===== STATE =====
 let currentIndex = 0;
+let scale = 1;
+let translateX = 0;
+let translateY = 0;
+let isDragging = false;
+let startX = 0;
+let startY = 0;
+let initialDistance = 0;
 
-// ====== CREATE GALLERY ======
-images.forEach((fileName, index) => {
-  const item = document.createElement("div");
-  item.classList.add("gallery-item");
+// ===== DOM ELEMENTS =====
+const gallery = document.getElementById('gallery');
+const lightbox = document.getElementById('lightbox');
+const lightboxImage = document.getElementById('lightbox-image');
+const lightboxCaption = document.getElementById('lightbox-caption');
+const lightboxClose = document.getElementById('lightbox-close');
+const lightboxPrev = document.getElementById('lightbox-prev');
+const lightboxNext = document.getElementById('lightbox-next');
+const lightboxDownload = document.getElementById('lightbox-download');
+const thumbnailsContainer = document.getElementById('thumbnails-container');
+const lightboxContent = document.getElementById('lightbox-content');
+const lightboxImageWrapper = document.getElementById('lightbox-image-wrapper');
 
-  const imageEl = document.createElement("img");
-  imageEl.src = `img/${fileName}`;
-  imageEl.alt = `OTEN COLLECTION ${index + 1}`;
-  imageEl.loading = "lazy";
+// ===== HELPER FUNCTIONS =====
+function generateCaption(filename) {
+    return filename.replace('.jpg', '').replace(/[-_]/g, ' ').toUpperCase();
+}
 
-  item.appendChild(imageEl);
-  gallery.appendChild(item);
+function updateImage() {
+    const filename = images[currentIndex];
+    const path = `img/${filename}`;
+    lightboxImage.src = path;
+    lightboxCaption.textContent = generateCaption(filename);
+    
+    // Update active thumbnail
+    document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
+        thumb.classList.toggle('active', i === currentIndex);
+    });
+    
+    // Reset zoom and position
+    resetTransform();
+}
 
-  item.addEventListener("click", () => openLightbox(index));
-});
+function resetTransform() {
+    scale = 1;
+    translateX = 0;
+    translateY = 0;
+    updateTransform();
+}
 
-// ====== CREATE THUMBNAILS ======
-images.forEach((fileName, index) => {
-  const thumb = document.createElement("img");
-  thumb.classList.add("thumbnail");
-  thumb.src = `img/${fileName}`;
-  thumb.alt = `OTEN COLLECTION ${index + 1}`;
-  thumb.loading = "lazy";
+function updateTransform() {
+    lightboxImage.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+}
 
-  thumb.addEventListener("click", () => openLightbox(index));
-  thumbnailsContainer.appendChild(thumb);
-});
-
-// ====== OPEN LIGHTBOX ======
 function openLightbox(index) {
-  currentIndex = index;
-  updateLightbox();
-  lightbox.classList.add("active");
-  document.body.style.overflow = "hidden";
+    currentIndex = index;
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    updateImage();
 }
 
-// ====== CLOSE LIGHTBOX ======
 function closeLightbox() {
-  lightbox.classList.remove("active");
-  document.body.style.overflow = "auto";
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+    resetTransform();
 }
 
-// ====== UPDATE LIGHTBOX ======
-function updateLightbox() {
-  const fileName = images[currentIndex];
-  lightboxImage.src = `img/${fileName}`;
-  lightboxCaption.textContent = `OTEN COLLECTION ${currentIndex + 1}`;
-
-  document.querySelectorAll(".thumbnail").forEach((thumb, idx) => {
-    thumb.classList.toggle("active", idx === currentIndex);
-  });
-
-  lightboxDownload.setAttribute("data-src", `img/${fileName}`);
-}
-
-// ====== NAVIGATION ======
 function nextImage() {
-  currentIndex = (currentIndex + 1) % images.length;
-  updateLightbox();
+    currentIndex = (currentIndex + 1) % images.length;
+    updateImage();
 }
 
 function prevImage() {
-  currentIndex = (currentIndex - 1 + images.length) % images.length;
-  updateLightbox();
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    updateImage();
 }
 
-// ====== EVENT LISTENERS ======
-lightboxClose.addEventListener("click", closeLightbox);
-lightboxPrev.addEventListener("click", prevImage);
-lightboxNext.addEventListener("click", nextImage);
-
-lightbox.addEventListener("click", (e) => {
-  if (e.target === lightbox) closeLightbox();
+// ===== BUILD GALLERY =====
+images.forEach((filename, index) => {
+    const item = document.createElement('div');
+    item.className = 'gallery-item';
+    
+    const img = document.createElement('img');
+    img.src = `img/${filename}`;
+    img.alt = generateCaption(filename);
+    img.loading = 'lazy';
+    img.addEventListener('click', () => openLightbox(index));
+    
+    item.appendChild(img);
+    gallery.appendChild(item);
 });
 
-document.addEventListener("keydown", (e) => {
-  if (!lightbox.classList.contains("active")) return;
-  if (e.key === "ArrowRight") nextImage();
-  if (e.key === "ArrowLeft") prevImage();
-  if (e.key === "Escape") closeLightbox();
+// ===== BUILD THUMBNAILS =====
+images.forEach((filename, index) => {
+    const thumb = document.createElement('img');
+    thumb.src = `img/${filename}`;
+    thumb.className = 'thumbnail';
+    thumb.alt = generateCaption(filename);
+    thumb.addEventListener('click', () => {
+        currentIndex = index;
+        updateImage();
+    });
+    thumbnailsContainer.appendChild(thumb);
 });
 
-// ====== DOWNLOAD BUTTON ======
-lightboxDownload.addEventListener("click", () => {
-  const url = lightboxDownload.getAttribute("data-src");
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = url.split("/").pop();
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+// ===== LIGHTBOX CONTROLS =====
+lightboxClose.addEventListener('click', closeLightbox);
+lightboxPrev.addEventListener('click', prevImage);
+lightboxNext.addEventListener('click', nextImage);
+
+lightboxDownload.addEventListener('click', () => {
+    const link = document.createElement('a');
+    link.href = lightboxImage.src;
+    link.download = images[currentIndex];
+    link.click();
 });
 
-// ====== SWIPE + PINCH ZOOM ======
-let startX = 0;
-let startY = 0;
-let scale = 1;
-let startDistance = 0;
-
-lightbox.addEventListener("touchstart", (e) => {
-  startX = e.touches[0].clientX;
-  startY = e.touches[0].clientY;
-
-  if (e.touches.length === 2) {
-    startDistance = getDistance(e.touches[0], e.touches[1]);
-  }
+// Click outside image to close
+lightboxContent.addEventListener('click', (e) => {
+    if (e.target === lightboxContent) {
+        closeLightbox();
+    }
 });
 
-lightbox.addEventListener("touchend", (e) => {
-  const endX = e.changedTouches[0].clientX;
-  const endY = e.changedTouches[0].clientY;
-  const diffX = endX - startX;
-  const diffY = endY - startY;
-
-  if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
-    if (diffX > 0) prevImage();
-    else nextImage();
-  }
+// ===== KEYBOARD NAVIGATION =====
+document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('active')) return;
+    
+    switch(e.key) {
+        case 'Escape':
+            closeLightbox();
+            break;
+        case 'ArrowLeft':
+            prevImage();
+            break;
+        case 'ArrowRight':
+            nextImage();
+            break;
+    }
 });
 
-lightboxImage.addEventListener("touchmove", (e) => {
-  if (e.touches.length === 2) {
-    const distance = getDistance(e.touches[0], e.touches[1]);
-    scale = Math.max(1, Math.min(4, scale * (distance / startDistance)));
-    lightboxImage.style.transform = `scale(${scale})`;
-    startDistance = distance;
-  }
+// ===== ZOOM FUNCTIONALITY (Desktop Scroll) =====
+lightboxImageWrapper.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    
+    const delta = e.deltaY > 0 ? -0.1 : 0.1;
+    scale = Math.min(Math.max(1, scale + delta), 4);
+    updateTransform();
 });
 
-function getDistance(t1, t2) {
-  const dx = t2.clientX - t1.clientX;
-  const dy = t2.clientY - t1.clientY;
-  return Math.sqrt(dx * dx + dy * dy);
+// ===== DRAG TO PAN (when zoomed) =====
+lightboxImageWrapper.addEventListener('mousedown', (e) => {
+    if (scale === 1) return;
+    isDragging = true;
+    startX = e.clientX - translateX;
+    startY = e.clientY - translateY;
+    lightboxImageWrapper.classList.add('dragging');
+});
+
+document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    translateX = e.clientX - startX;
+    translateY = e.clientY - startY;
+    updateTransform();
+});
+
+document.addEventListener('mouseup', () => {
+    isDragging = false;
+    lightboxImageWrapper.classList.remove('dragging');
+});
+
+// ===== MOBILE TOUCH GESTURES =====
+let touchStartX = 0;
+let touchStartY = 0;
+let touchMoveX = 0;
+
+// Swipe navigation
+lightboxContent.addEventListener('touchstart', (e) => {
+    if (scale > 1) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+});
+
+lightboxContent.addEventListener('touchmove', (e) => {
+    if (scale > 1) return;
+    touchMoveX = e.touches[0].clientX;
+});
+
+lightboxContent.addEventListener('touchend', (e) => {
+    if (scale > 1) return;
+    
+    const diff = touchStartX - touchMoveX;
+    const threshold = 50;
+    
+    if (Math.abs(diff) > threshold) {
+        if (diff > 0) nextImage();
+        else prevImage();
+    }
+});
+
+// Pinch to zoom
+function getDistance(touches) {
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
 }
 
-// reset zoom on close
-lightboxClose.addEventListener("click", () => {
-  scale = 1;
-  lightboxImage.style.transform = "scale(1)";
+lightboxImageWrapper.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2) {
+        e.preventDefault();
+        initialDistance = getDistance(e.touches);
+    }
+});
+
+lightboxImageWrapper.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 2) {
+        e.preventDefault();
+        const currentDistance = getDistance(e.touches);
+        const delta = (currentDistance - initialDistance) * 0.01;
+        scale = Math.min(Math.max(1, scale + delta), 4);
+        initialDistance = currentDistance;
+        updateTransform();
+    } else if (e.touches.length === 1 && scale > 1) {
+        if (!isDragging) {
+            isDragging = true;
+            startX = e.touches[0].clientX - translateX;
+            startY = e.touches[0].clientY - translateY;
+        }
+        translateX = e.touches[0].clientX - startX;
+        translateY = e.touches[0].clientY - startY;
+        updateTransform();
+    }
+});
+
+lightboxImageWrapper.addEventListener('touchend', () => {
+    isDragging = false;
 });
