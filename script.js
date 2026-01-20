@@ -259,13 +259,7 @@ document.addEventListener('keydown', (e) => {
     switch(e.key) {
         case 'Escape':
             closeLightbox();
-            break;
-        case 'ArrowLeft':
-            prevImage();
-            break;
-        case 'ArrowRight':
-            nextImage();
-            break;
+
     }
 });
 
