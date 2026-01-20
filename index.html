@@ -21,6 +21,22 @@
     <p>© 2025-2026 BOYZ ON THE BLK</p>
   </footer>
 
+  <!-- LIGHTBOX MODAL -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Image viewer">
+    <button class="lightbox__close" id="lightboxClose" aria-label="Close">
+      ✕
+    </button>
+
+    <div class="lightbox__content">
+      <img class="lightbox__img" id="lightboxImg" alt="Selected gallery image" />
+      <div class="lightbox__actions">
+        <a class="lightbox__download" id="lightboxDownload" download="boyz-on-the-blk.jpg">
+          Save / Download
+        </a>
+      </div>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>

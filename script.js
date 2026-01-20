@@ -1,6 +1,9 @@
 const gallery = document.getElementById("gallery");
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightboxImg");
+const lightboxDownload = document.getElementById("lightboxDownload");
+const lightboxClose = document.getElementById("lightboxClose");
 
-// PUT YOUR EXACT FILE NAMES HERE
 const images = [
   "0c6a1d80-48e7-4e46-8446-7d59cb0e0c6d.jpg",
   "0c328372-c83e-439a-b974-b4d9ea2868dc.jpg",
@@ -41,7 +44,7 @@ const images = [
   "39d9a635-5541-4bd9-ab8c-3cacc2d4582c.jpg",
   "41aac799-790b-40a3-a490-aed8cc4959ba.jpg",
   "44f16f65-8de0-4957-85a0-6f5a0eab64fc.jpg",
-  "45a336a0-b5de-4eac-b5d2-03e40ab97318.jpg",
+  "45a336a0-b5de-4eac-b5d2-03e40ab97318e.jpg",
   "50d9bdf0-c334-4c35-bae7-066892f81bd2.jpg",
   "57c4479b-d214-4e3c-9766-b23c28592c74.jpg",
   "72bf0ddd-8373-42fb-8618-44611c80cf3e.jpg",
@@ -55,7 +58,7 @@ const images = [
   "158c40e7-05e2-434f-a2bc-72870cdf64c2.jpg",
   "211d8c6d-75df-418b-b9a0-54684210364a.jpg",
   "222a8dab-be7a-44d1-badc-ebe38cb4e6b5.jpg",
-  "333c47a9-6453-4bff-8cf6-05b8d82295b8.jpg",
+  "333c47a9-6459-4bff-8cf6-05b8d82295b8.jpg",
   "492b08be-3f25-4c38-b9cb-8313a0f75c2e.jpg",
   "581ef210-8024-43e4-b55d-7e4653751839.jpg",
   "698e99a0-ebe7-46f5-9b3a-fa18d1262c8e.jpg",
@@ -64,7 +67,7 @@ const images = [
   "4323d87c-241f-49fa-9e95-c9b618f09cf2e.jpg",
   "5995c2a3-40e3-4f50-a351-6f3832360659.jpg",
   "06385fe3-125e-4548-849b-f85b43c3df6d.jpg",
-  "6969e594-e6a6-4a07-ada5-9f79515437c2.jpg",
+  "6969e594-e6a6-4a07-ada5-9f79515437c2e.jpg",
   "7066ef2a-3e39-4f8e-a346-c1b4a70cca67.jpg",
   "9298f26c-397c-4629-a6dc-0cf9ad1f8249.jpg",
   "72049c63-6911-46dc-aac9-f6f2543dbe13.jpg",
@@ -74,15 +77,15 @@ const images = [
   "5918508b-2dfe-4bdb-86ab-48bbd8d0b238.jpg",
   "6310044e-bbc3-4f99-be51-44693e5d5a6f.jpg",
   "7293781d-8922-4221-afb2-3088aacd2827.jpg",
-  "9642930f-1340-455f-99fd-fb1b483fc3fd.jpg",
+  "9642930f-1340-455f-99fd-fb1b4833c3fd.jpg",
   "21415491-9c71-47c2-a0dd-defd54746188.jpg",
-  "34971253-e404-4102-9c8f-9f462bcf9fe1.jpg",
+  "34971253-e404-4102-9c8f-9f462cf9fe1.jpg",
   "68974395-664b-4a18-be16-357352ffb38e.jpg",
   "83993442-227c-48f4-8337-e812c168610f.jpg",
   "90404759-48b4-4182-b3d9-eb01bc73364f.jpg",
   "a79c082f-babb-4879-b53a-2412558b761b.jpg",
   "a0778c93-8a26-4d55-a069-4bc1e04d1106.jpg",
-  "aa08ca39-1f81-42d6-8843-1102d587120a.jpg",
+  "aa08ca39-1f81-42d6-8843-1102d587a6f9.jpg",
   "b6d9f0d0-3e26-4660-aaa7-0126a3d60e97.jpg",
   "b4175c46-029a-415f-b4e3-71859c9da416.jpg",
   "b0750186-acc0-4d8d-8084-f531d066dc15.jpg",
@@ -111,20 +114,20 @@ const images = [
   "d27407ff-4607-45f7-b403-e498640284f1.jpg",
   "d055877e-82eb-4a1d-b555-6625d4a68059.jpg",
   "d966623d-584c-4edf-bb05-39a57294e9d4.jpg",
-  "da9b0d56-0193-4ff7-a07e-1cd764cad539.jpg",
+  "da9b0d56-0193-4ffc-a07e-1cd764cad539.jpg",
   "dc37f8c5-bf9f-4c9c-8ecb-a61afa2fa3d7.jpg",
   "e2a996d3-f961-4284-8568-553ce09686ef.jpg",
   "e3c48164-6dbd-4dc4-81c4-5a6178eddb1a.jpg",
-  "e9f2f54d-43d4-4f19-85cf-708bc2a8db83.jpg",
+  "e9f2f54d-43d4-4f19-85cf-708cb2a8db83.jpg",
   "eb8779e7-1755-400b-b01b-ff4d4e1beb9d.jpg",
-  "effbc214-3b82-4b73-88f2-1a02580391a7.jpg",
+  "effbc214-3b82-4b73-88f2-1a0253a9a7a.jpg",
   "f6df6a37-8ff8-40cf-a326-741d3e8c9383.jpg",
   "f19c1c20-8953-4438-9ae8-ec2797ef8a9a.jpg",
   "f62e47ab-759b-455e-8872-5304c3cc3178.jpg",
   "f104c97f-5581-4b58-82e2-680e14d0535a.jpg",
   "f58489ab-69fb-44c4-aff0-d755193a951d.jpg",
   "f1798442-fc4a-4efe-ae2e-0b8cd516f085.jpg",
-  "fb8e9947-691d-4aaf-9a25-adf664dd80e0.jpg",
+  "fb8e9947-691d-4aaf-9a25-adf664dd0a7a.jpg",
   "ff00cb5c-6933-44a3-903a-fbbcc29812fb.jpg"
 ];
 
@@ -143,6 +146,9 @@ const buildGallery = () => {
     const overlay = document.createElement("div");
     overlay.className = "gallery__overlay";
 
+    // Click opens lightbox
+    card.addEventListener("click", () => openLightbox(img));
+
     card.appendChild(image);
     card.appendChild(overlay);
     fragment.appendChild(card);
@@ -150,5 +156,35 @@ const buildGallery = () => {
 
   gallery.appendChild(fragment);
 };
+
+const openLightbox = (imgName) => {
+  lightboxImg.src = `img/${imgName}`;
+  lightboxDownload.href = `img/${imgName}`;
+  lightbox.classList.add("is-open");
+  lightbox.setAttribute("aria-hidden", "false");
+
+  // Accessibility focus
+  lightboxClose.focus();
+};
+
+const closeLightbox = () => {
+  lightbox.classList.remove("is-open");
+  lightbox.setAttribute("aria-hidden", "true");
+};
+
+// Close on outside click
+lightbox.addEventListener("click", (e) => {
+  if (e.target === lightbox) closeLightbox();
+});
+
+// Close on ESC
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && lightbox.classList.contains("is-open")) {
+    closeLightbox();
+  }
+});
+
+// Close button
+lightboxClose.addEventListener("click", closeLightbox);
 
 buildGallery();
