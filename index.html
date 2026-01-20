@@ -1,24 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOYZ ON THE BLK</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BOYZ ON THE BLK</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
+  <header class="hero" aria-label="BOYZ ON THE BLK hero section">
+    <div class="hero__inner">
+      <h1 class="hero__title">BOYZ ON THE BLK</h1>
+      <span class="hero__subtitle">OTEN COLLECTION</span>
+    </div>
+  </header>
 
-<section class="hero">
-    <h1>BOYZ ON THE BLK</h1>
-    <span>Street • Culture • Identity</span>
-</section>
+  <main class="gallery" id="gallery" aria-label="Photo gallery"></main>
 
-<main class="gallery" id="gallery"></main>
+  <footer class="footer">
+    <p>© 2025-2026 BOYZ ON THE BLK</p>
+  </footer>
 
-<footer>
-    <p>BOYZ ON THE BLK © 2026</p>
-</footer>
+  <!-- LIGHTBOX MODAL -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Image viewer">
+    <button class="lightbox__close" id="lightboxClose" aria-label="Close">
+      ✕
+    </button>
 
-<script src="script.js"></script>
+    <div class="lightbox__content">
+      <img class="lightbox__img" id="lightboxImg" alt="Selected gallery image" />
+      <div class="lightbox__actions">
+        <a class="lightbox__download" id="lightboxDownload" download="boyz-on-the-blk.jpg">
+          Save / Download
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
