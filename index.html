@@ -6,30 +6,43 @@
   <title>BOYZ ON THE BLK</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <header class="hero">
-    <div class="hero__inner">
-      <h1 class="hero__title">BOYZ ON THE BLK</h1>
-      <span class="hero__subtitle">OTEN COLLECTION</span>
-    </div>
-  </header>
 
+<body>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>BOYZ ON THE BLK</h1>
+    <span>OTEN COLLECTION</span>
+  </section>
+
+  <!-- Gallery Grid -->
   <main class="gallery" id="gallery"></main>
 
-  <!-- LIGHTBOX -->
+  <!-- Lightbox Modal -->
   <div class="lightbox" id="lightbox">
+    <div class="lightbox-header">
+      <div class="lightbox-close" id="lightbox-close" aria-label="Close lightbox">×</div>
+      <button class="lightbox-download" id="lightbox-download">Download</button>
+    </div>
+    
     <div class="lightbox-content" id="lightbox-content">
-      <button class="lightbox-close" id="lightbox-close">✕</button>
-      <button class="lightbox-prev" id="lightbox-prev">‹</button>
+      <div class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Previous image">‹</div>
       <div class="lightbox-image-wrapper" id="lightbox-image-wrapper">
-        <img id="lightbox-image" alt="Lightbox Image" />
+        <img id="lightbox-image" src="" alt="">
       </div>
-      <button class="lightbox-next" id="lightbox-next">›</button>
-      <button class="lightbox-download" id="lightbox-download">⬇</button>
-
-      <div class="lightbox-thumbnails" id="thumbnails-container"></div>
+      <div class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Next image">›</div>
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    
+    <div class="lightbox-thumbnails">
+      <div class="thumbnails-container" id="thumbnails-container"></div>
     </div>
   </div>
+
+  <!-- Footer -->
+  <footer>
+    © 2025-2026 BOYZ ON THE BLK
+  </footer>
 
   <script src="script.js"></script>
 </body>
