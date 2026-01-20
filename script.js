@@ -145,10 +145,6 @@ const buildGallery = () => {
     image.alt = "BOYZ ON THE BLK photo";
     image.loading = "lazy";
 
-    image.onerror = () => {
-      card.style.display = "none";
-    };
-
     const overlay = document.createElement("div");
     overlay.className = "gallery__overlay";
 
@@ -163,15 +159,18 @@ const buildGallery = () => {
 };
 
 const openLightbox = (imgName) => {
-  lightboxImg.src = `img/${imgName}`;
-  lightboxDownload.href = `img/${imgName}`;
+  const imgPath = `img/${imgName}`;
+  lightboxImg.src = imgPath;
+
+  // IMPORTANT: use direct link to open in new tab (works on mobile)
+  lightboxDownload.href = imgPath;
+  lightboxDownload.target = "_blank";
+
   lightbox.classList.add("is-open");
-  lightbox.setAttribute("aria-hidden", "false");
 };
 
 const closeLightbox = () => {
   lightbox.classList.remove("is-open");
-  lightbox.setAttribute("aria-hidden", "true");
 };
 
 lightbox.addEventListener("click", (e) => {
@@ -179,9 +178,7 @@ lightbox.addEventListener("click", (e) => {
 });
 
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && lightbox.classList.contains("is-open")) {
-    closeLightbox();
-  }
+  if (e.key === "Escape") closeLightbox();
 });
 
 lightboxClose.addEventListener("click", closeLightbox);
