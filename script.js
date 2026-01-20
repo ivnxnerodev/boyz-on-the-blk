@@ -131,6 +131,7 @@ const images = [
   "ff00cb5c-6933-44a3-903a-fbbcc29812fb.jpg"
 ];
 
+
 const buildGallery = () => {
   const fragment = document.createDocumentFragment();
 
